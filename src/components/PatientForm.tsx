@@ -1,13 +1,14 @@
 
 import { useForm } from "react-hook-form"
 import Error from "./Error";
+import { ClsPatient } from "../classes/classes";
 
 const PatientForm = () => {
 
-    const { register, handleSubmit, formState: {errors} } = useForm();
+    const { register, handleSubmit, formState: {errors} } = useForm<ClsPatient>();
     
-    const onSubmit = () => {
-        console.log("Nuevo Paciente");
+    const onSubmit = (data: ClsPatient) => {
+        console.log(data);
     }
 
     return(
@@ -39,7 +40,7 @@ const PatientForm = () => {
                     />
 
                     {
-                        errors.name && <Error>{errors.name?.message?.toString()}</Error>
+                        errors.name && <Error>{errors.name?.message}</Error>
                     }
                     
                 </div>
@@ -62,7 +63,7 @@ const PatientForm = () => {
                     />
 
                     {
-                        errors.caretaker && <Error>{errors.caretaker?.message?.toString()}</Error>
+                        errors.caretaker && <Error>{errors.caretaker?.message}</Error>
                     }
 
                 </div>
@@ -88,11 +89,10 @@ const PatientForm = () => {
                         })} 
                     />
                     {
-                        errors.email && <Error>{errors.email?.message?.toString()}</Error>
+                        errors.email && <Error>{errors.email?.message}</Error>
                     }
                 </div>
-
-
+                
                 <div className="mb-5">
                     <label
                         htmlFor="date"
@@ -110,7 +110,7 @@ const PatientForm = () => {
                     />
 
                     {
-                        errors.date && <Error>{errors.date?.message?.toString()}</Error>
+                        errors.date && <Error>{errors.date?.message}</Error>
                     }
                 </div>
 
@@ -125,8 +125,14 @@ const PatientForm = () => {
                         id="symptoms"
                         className="w-full p-3 border border-gay-100"
                         placeholder="Síntomas del paciente"
+                        {...register("symptoms",{
+                            required: "Los síntomas son obligatorios"
+                        })}
                     >
                     </textarea>
+                    {
+                        errors.symptoms && <Error>{errors.symptoms?.message}</Error>
+                    }
                 </div>
                 
                 <input
