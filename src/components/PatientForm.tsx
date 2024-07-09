@@ -9,12 +9,11 @@ const PatientForm = () => {
     //const { addPatient } = usePatientStore()
     const addPatient = usePatientStore( (state) => state.addPatient );
     
-    const { register, handleSubmit, formState: {errors} } = useForm<ClsPatient>();
+    const { register, handleSubmit, formState: {errors}, reset } = useForm<ClsPatient>();
     
     const onSubmit = (data: ClsPatient) => {
-        
         addPatient(data);
-        //console.log(data);
+        reset();
     }
 
     return(
