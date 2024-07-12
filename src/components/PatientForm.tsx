@@ -40,7 +40,7 @@ const PatientForm = () => {
                         type="text"
                         placeholder="Nombre del paciente"
                         {...register("name",{
-                            required: "El Nombre del Paciente es obligarorio"
+                            required: "El Nombre del Paciente es obligarorio!"
                         })}
                     />
 
