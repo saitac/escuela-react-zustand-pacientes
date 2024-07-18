@@ -1,5 +1,6 @@
 
-import { create } from "zustand"
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 import { v7 as uuidv7 } from "uuid";
 import { ClsPatient } from "../classes/classes";
 
@@ -7,8 +8,9 @@ type PatientState = {
     patients: ClsPatient[];
     activePatient: ClsPatient | null;
     addPatient: (data: ClsPatient) => void;
-    editPatient: (patient: ClsPatient) => void;
+    getPatient: (patient: ClsPatient) => void;
     deletePatient: (patient: ClsPatient) => void;
+    updatePatient: (patient: ClsPatient) => void;
 }
 
 const createPatient = (data: ClsPatient): ClsPatient => {
@@ -17,7 +19,7 @@ const createPatient = (data: ClsPatient): ClsPatient => {
     return newPatient;
 }
 
-const usePatientStore = create<PatientState>( (set) => ({
+const usePatientStore = create<PatientState>()(devtools((set) => ({
     patients: [],
     activePatient: null,
     addPatient: (data: ClsPatient) => {
@@ -25,15 +27,23 @@ const usePatientStore = create<PatientState>( (set) => ({
             patients: [...state.patients, createPatient(data)]
         }));
     },
-    editPatient: (patient: ClsPatient) => {
-        console.log("edit", patient);
+    getPatient: (patient: ClsPatient) => {
+        set( () => ({
+            activePatient: patient
+        }) )
     },
     deletePatient: (patient: ClsPatient) => {
         set( (state) => ({
             patients: state.patients.filter((p: ClsPatient) => p.id !== patient.id)
         }))
     },
-}));
+    updatePatient: (patient: ClsPatient) => {
+        set((state) => ({
+            patients: state.patients.map((p: ClsPatient) => p.id === patient.id ? patient : p ),
+            activePatient: null
+        }))
+    }
+})));
 
 export {
     usePatientStore

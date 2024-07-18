@@ -1,19 +1,42 @@
 
 import { useForm } from "react-hook-form"
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 import Error from "./Error";
 import { ClsPatient } from "../classes/classes";
 import { usePatientStore } from "../stores/usePatientStore";
+
 
 const PatientForm = () => {
 
     //const { addPatient } = usePatientStore()
     const addPatient = usePatientStore( (state) => state.addPatient );
-    
-    const { register, handleSubmit, formState: {errors}, reset } = useForm<ClsPatient>();
+    const activePatient = usePatientStore( (state) => state.activePatient );
+    const updatePatient = usePatientStore( (state) => state.updatePatient );
+        
+    const { register, handleSubmit, formState: {errors}, reset, setValue, clearErrors } = useForm<ClsPatient>();
+
+    useEffect(() => {
+        const paciente: ClsPatient = activePatient != null ? activePatient : new ClsPatient();
+        clearErrors();
+        setValue("name", paciente.name);
+        setValue("caretaker", paciente.caretaker);
+        setValue("email", paciente.email);
+        setValue("date", paciente.date);
+        setValue("symptoms", paciente.symptoms);
+    },[activePatient]);
     
     const onSubmit = (data: ClsPatient) => {
-        addPatient(data);
+
+        if ( !activePatient ) {
+            addPatient(data);
+            toast.success("Paciente registrado correctamente");
+        } else {
+            updatePatient({...data, id: activePatient.id});
+        }
+
         reset();
+        
     }
 
     return(
@@ -143,7 +166,7 @@ const PatientForm = () => {
                 <input
                     type="submit"
                     className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
-                    value='Guardar Paciente'
+                    value={activePatient !== null && activePatient.id.length > 0 ? "Modificar Paciente" : "Guardar Paciente"}
                 />
 
             </form>

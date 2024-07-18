@@ -8,11 +8,11 @@ type PatientDetailsProps = {
 
 const PatientDetails = ({paciente}: PatientDetailsProps) => {
 
-    const editPatient = usePatientStore( (state) => state.editPatient );
+    const getPatient = usePatientStore( (state) => state.getPatient );
     const deletePatient = usePatientStore( (state) => state.deletePatient );
 
     const HandleBtnEditOnClick = (paciente: ClsPatient) => {
-        editPatient(paciente);
+        getPatient(paciente);
     }
 
     const HandleBtnDeleteOnClick = (paciente: ClsPatient) => {
@@ -27,7 +27,7 @@ const PatientDetails = ({paciente}: PatientDetailsProps) => {
             <PatientDetailsItem label="Email" data={paciente.email}/>
             <PatientDetailsItem label="Fecha Alta" data={paciente.date.toString()}/>
             <PatientDetailsItem label="Síntomas" data={paciente.symptoms}/>
-            <div className="flex justify-between mt-10">
+            <div className="flex flex-col lg:flex-row gap-3 justify-between mt-10">
                 <button
                     type="button"
                     className="py-2 px-10 bg-indigo-600 hover:bg-indigo-700 text-white font-bold
