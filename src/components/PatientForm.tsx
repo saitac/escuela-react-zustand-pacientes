@@ -33,6 +33,7 @@ const PatientForm = () => {
             toast.success("Paciente registrado correctamente");
         } else {
             updatePatient({...data, id: activePatient.id});
+            toast.success("Paciente Actualizado correctamente");
         }
 
         reset();

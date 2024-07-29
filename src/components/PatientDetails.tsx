@@ -1,3 +1,4 @@
+import { toast } from "react-toastify"
 import { ClsPatient } from "../classes/classes"
 import { usePatientStore } from "../stores/usePatientStore"
 import PatientDetailsItem from "./PatientDetailsItem"
@@ -17,6 +18,9 @@ const PatientDetails = ({paciente}: PatientDetailsProps) => {
 
     const HandleBtnDeleteOnClick = (paciente: ClsPatient) => {
         deletePatient(paciente);
+        toast("Paciente Eliminado",{
+            type: "error"
+        })
     }
 
     return(

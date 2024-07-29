@@ -1,6 +1,6 @@
 
 import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { v7 as uuidv7 } from "uuid";
 import { ClsPatient } from "../classes/classes";
 
@@ -19,7 +19,8 @@ const createPatient = (data: ClsPatient): ClsPatient => {
     return newPatient;
 }
 
-const usePatientStore = create<PatientState>()(devtools((set) => ({
+const usePatientStore = create<PatientState>()(
+    devtools(persist((set) => ({
     patients: [],
     activePatient: null,
     addPatient: (data: ClsPatient) => {
@@ -43,6 +44,9 @@ const usePatientStore = create<PatientState>()(devtools((set) => ({
             activePatient: null
         }))
     }
+}),{
+    name:"patient-storage",
+    storage: createJSONStorage(()=>localStorage)
 })));
 
 export {
